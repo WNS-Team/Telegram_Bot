@@ -12,12 +12,12 @@ from datetime import datetime
 TOKEN = os.getenv('BOT_TOKEN')
 HEROKU_APP_NAME = os.getenv('HEROKU_APP_NAME')
 
-# webhook settings
+
 WEBHOOK_HOST = f'https://{HEROKU_APP_NAME}.herokuapp.com'
 WEBHOOK_PATH = f"/webhook/{TOKEN[1:]} + '1029' " 
 WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
 
-# webserver settings
+
 WEBAPP_HOST = '0.0.0.0'
 WEBAPP_PORT = os.getenv('PORT', default=8000)
 
@@ -29,14 +29,14 @@ URL_ctft1me = "https://ctftime.org/event/list/upcoming"
 time_sleep = 3
 value = ""
 old_value = ""
-chat_id = [-1001503717052, -480696228, 465424337, 465424337]  # Список чатов, где разрешена команда /all [WNS, Team8, Олег ]
-adm_list = ['W_N_S_e_e', 'bubalexoleh']  # Список админов для индивидуального ответа на команду /all [Я, Олег, ]
+chat_id = [-1001503717052, -480696228, 465424337, 465424337]  
+adm_list = ['W_N_S_e_e', 'bubalexoleh']  
 user_list = [465424337, 495470522, -1001503717052,
-             -480696228, 465424337]  # Список ID чатов для доступа к боту [Я, Света, группа WNS, Team8, Олег]
+             -480696228, 465424337] 
 all_list = ['W_N_S_e_e', 'instructor_pamir', 'Aladins9', 'upsnake', 'Cyber_Tempest', 'kop73r', 'mqxmm', 'kot312',
             'Raymanky', 'comrade_n_co', 'IH87H3WH013FUCKIN6W0R1D', 'john_shefer',
-            'cheat3r']  # Список для вызова пользователей при команде /all
-# all_list = ['W_N_S_e_e', 'svetaskulkina']  # Список для вызова пользователей при команде /all
+            'cheat3r']  
+
 
 URL_ctfnews = "https://ctfnews.ru/"
 
@@ -66,7 +66,6 @@ def news(url):
 
 
 def weather(url):
-    # cleaned_string = re.sub(r'[A-z]', '', str(weather(URL_weather_mail)))
     req = requests.get(url)
     soup = b(req.text, 'html.parser')
     date = soup.find_all('div', "information__header__left__date")
@@ -151,7 +150,7 @@ def delete_message(seconds, messages_from_user_id, a_message_id):
     bot.delete_message(messages_from_user_id, a_message_id)
 
 
-@bot.message_handler(commands=['start'])  # Обработка команды для старта
+@bot.message_handler(commands=['start']) 
 def welcome(messages):
     a = bot.send_sticker(messages.from_user.id,
                          sticker='CAACAgIAAxkBAAEFmfBi_o1kldAJWHAcSbyn4x5vkWqU4gACwwEAAlLiCBpu1WPBtdfvMCkE')
@@ -169,16 +168,9 @@ def welcome(messages):
     bot.delete_message(messages.chat.id, messages.message_id)  # Верно
     delete_message(time_sleep, messages.from_user.id, a.message_id)
 
-    # bot.send_message(messages.chat.id, '😀'.format( # Вместо этого нужно отправить пустое сообщение
-    #     messages.chat, bot.get_me()),
-    #                  parse_mode='html', reply_markup=markup)
-
-
 @bot.message_handler(commands=['stop'])  # Обработка команды для выхода
 def bye(messages):
-    # bye_Sti = open(path+'byeMorty.tgs', 'rb')
     hideboard = types.ReplyKeyboardRemove()
-    # bot.send_message(messages.chat.id, "\ud83d\udc4b")
     bot.send_message(messages.from_user.id, '\ud83d\udd96'.encode('utf16', errors='surrogatepass').decode('utf16'))
     bot.send_message(messages.from_user.id,
                      "До свидания, {0.first_name}!\nМы, команда <b>Team8</b>, надеемся, что ты хорошо провел(а) время \n"
@@ -187,7 +179,6 @@ def bye(messages):
     bot.delete_message(messages.chat.id, messages.message_id)
 
 
-# Ограничение в команде all
 @bot.message_handler(commands=["all"])
 def allmes(messages):
     if messages.chat.type != "private":
@@ -198,7 +189,7 @@ def allmes(messages):
                 req = str(Rqu).split()
                 admin_list.append(str(req[8])[1:-2])
             nick = messages.from_user.username
-            # if nick not in admin_list:                                                 #Платная функция для использования команды all :)))
+            # if nick not in admin_list:      # Pay function :)
             if nick not in adm_list:
                 bot.send_message(messages.from_user.id, 'Ты че Олег что-ли?! 🤬')
                 bot.delete_message(messages.chat.id, messages.message_id)
@@ -222,9 +213,6 @@ def go_send_messages(call):
     else:
         bot.send_message(call.from_user.id, value, reply_markup=keyboard_for_calc())
     bot.delete_message(call.chat.id, call.message_id)
-
-
-# Ограничение доступа к боту по ID
 
 
 @bot.message_handler(func=lambda messages: messages.chat.id not in user_list)
@@ -282,11 +270,11 @@ def go_send_messages(messages):
 def callback_inline_one(call):
     try:
         if call.message:
-            if call.data == 'ctftime':  # Ближайшие мероприятия
+            if call.data == 'ctftime':  
                 bot.send_message(call.from_user.id, "Ближайшие мероприятия:\n\n" + ctftime(URL_ctft1me),
                                  parse_mode="html")
 
-            elif call.data == 'ctfnews':  # Проведённые мероприятия
+            elif call.data == 'ctfnews':  
                 bot.send_message(call.from_user.id, "")
 
             elif call.data == 'rand':
@@ -315,8 +303,6 @@ def callback_inline_one(call):
         bot.send_message(call.from_user.id,
                          "Вероятно, что это еще в разработке !😅")
 
-
-# Калькулятор
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_func(query):
@@ -348,7 +334,6 @@ def callback_func(query):
         value = ""
 
 
-# RUN
 if __name__ == "__main__":
 
     try:
