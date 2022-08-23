@@ -29,13 +29,10 @@ URL_ctft1me = "https://ctftime.org/event/list/upcoming"
 time_sleep = 3
 value = ""
 old_value = ""
-chat_id = [-1001503717052, -480696228, 465424337, 465424337]  
-adm_list = ['W_N_S_e_e', 'bubalexoleh']  
-user_list = [465424337, 495470522, -1001503717052,
-             -480696228, 465424337] 
-all_list = ['W_N_S_e_e', 'instructor_pamir', 'Aladins9', 'upsnake', 'Cyber_Tempest', 'kop73r', 'mqxmm', 'kot312',
-            'Raymanky', 'comrade_n_co', 'IH87H3WH013FUCKIN6W0R1D', 'john_shefer',
-            'cheat3r']  
+chat_id = ['Chat ID']  
+adm_list = ['Admin name ']  
+user_list = ['User ID'] 
+all_list = ['Your user name']  
 
 
 URL_ctfnews = "https://ctfnews.ru/"
